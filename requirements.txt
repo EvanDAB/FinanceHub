@@ -1,0 +1,27 @@
+# Core dependencies used by multiple agents
+finnhub-python>=2.1.0
+streamlit>=1.30.0
+gradio>=3.38.0
+langchain>=0.0.320
+langchain-core>=0.0.60
+langchain-openai>=0.0.20
+langchain-community>=0.0.20
+langchain-text-splitters==0.3.11
+faiss-cpu>=1.7.4
+openai>=0.27.0
+python-dotenv>=1.0.0
+requests>=2.31.0
+
+# Agent-specific dependencies
+PyPDF2==3.0.1  # for agent_3 (PDF reading)
+tavily-python>=0.1.9  # for agent_3 (web search)
+langchain-community[tavily]>=0.0.20  # for Tavily search integration
+pandas>=2.0.0  # for agent_6 (portfolio management)
+yfinance>=0.2.35  # for agent_6 (stock data)
+
+# Visualization and charting
+plotly>=5.0.0  # for performance attribution charts and yield curves
+
+# Market data APIs
+fredapi>=0.5.0  # for agent_2 (FRED economic data)
+polygon-api-client>=1.0.0  # for agent_2 (yield curve data)

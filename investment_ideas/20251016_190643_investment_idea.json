@@ -1,0 +1,12 @@
+{
+  "thesis": "Investment Idea",
+  "timeframe": "Short-term (< 1 month)",
+  "risk_level": "Medium",
+  "investment_types": [
+    "Stocks"
+  ],
+  "position_size": 5.0,
+  "created_at": "2025-10-16T19:06:43.834163",
+  "analysis": null,
+  "status": "draft"
+}

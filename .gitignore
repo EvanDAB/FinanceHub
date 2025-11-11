@@ -1,0 +1,23 @@
+# Environment variables
+.envrc
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+env/
+venv/
+.env/
+.venv/
+
+# VS Code
+.vscode/
+
+# Streamlit
+.streamlit/
+
+# FAISS index files
+*.faiss
+*.index
