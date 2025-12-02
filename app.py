@@ -15,8 +15,8 @@ FRED_API_KEY = os.environ.get("FRED_API_KEY")
 TAVILY_API_KEY = os.environ.get("TAVILY_API_KEY")
 
 # Import required classes
-from agents.idea_builder_goal_planner_agent import InvestmentIdea
-from util.idea.idea_builder_ui import render_idea_builder_tab
+# from agents.idea_builder_goal_planner_agent import InvestmentIdea
+# from util.idea.idea_builder_ui import render_idea_builder_tab
 
 # Validate required API keys
 required_keys = {
@@ -54,11 +54,11 @@ class FinanceHub:
             self.portfolio_agent.load_portfolio()
             # Note: Beta calculation is deferred until dashboard tab is accessed
             
-            # Initialize idea builder agent
-            from agents.idea_builder_goal_planner_agent import IdeaBuilderAgent, InvestmentIdea
-            from util.idea.idea_storage import IdeaStorage
-            self.idea_builder = IdeaBuilderAgent()
-            self.idea_storage = IdeaStorage()
+            # # Initialize idea builder agent
+            # from agents.idea_builder_goal_planner_agent import IdeaBuilderAgent, InvestmentIdea
+            # from util.idea.idea_storage import IdeaStorage
+            # self.idea_builder = IdeaBuilderAgent()
+            # self.idea_storage = IdeaStorage()
             
         except Exception as e:
             st.error(f"Failed to initialize agents: {str(e)}")
@@ -83,8 +83,7 @@ class FinanceHub:
 # Configure page with minimal UI
 st.set_page_config(
     page_title="Finance AI Hub",
-    layout="wide",
-    initial_sidebar_state="collapsed"
+    layout="wide"
 )
 
 def format_indicator_metric(indicator_name: str, current_value: str, trend: str, impact: str) -> tuple:
@@ -126,12 +125,18 @@ if 'hub' not in st.session_state:
 st.title("Finance AI Hub")
 
 # Create tabs for navigation
-tab_dashboard,  tab_market, tab_education, tab_portfolio, tab_ideas = st.tabs([
-    "� Dashboard",
+# tab_dashboard,  tab_market, tab_education, tab_portfolio, tab_ideas = st.tabs([
+#     "📊 Dashboard",
+#     "📊 Market Analysis",
+#     "📚 Financial/Tax Education",
+#     "💼 Portfolio Management",
+#     "💡 Idea Builder"
+# ])
+tab_dashboard,  tab_market, tab_education, tab_portfolio = st.tabs([
+    "📊 Dashboard",
     "📊 Market Analysis",
     "📚 Financial/Tax Education",
-    "💼 Portfolio Management",
-    "💡 Idea Builder"
+    "💼 Portfolio Management"
 ])
 
 # Dashboard Tab
@@ -618,10 +623,12 @@ with tab_portfolio:
         except Exception as e:
             st.error(f"Error analyzing portfolio: {str(e)}")
 
-# Idea Builder Tab
-with tab_ideas:
-    # Use the modular UI implementation
-    render_idea_builder_tab()
+# # Idea Builder Tab
+# with tab_ideas:
+#     # Use the modular UI implementation
+#     # render_idea_builder_tab()
+#     from ui.idea_builder_ui import render_multi_step_form
+#     render_multi_step_form()
 
 # Footer
 st.markdown("---")
