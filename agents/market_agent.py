@@ -63,7 +63,8 @@ class MarketRegimeRAG:
                 'Weekly Jobless Claims': 'ICSA',
                 'Durable Goods Orders': 'DGORDER',
                 'Industrial Production (MoM %)': 'INDPRO',
-                'Vix (Volatility Index)': 'VIXCLS'
+                'Vix (Volatility Index)': 'VIXCLS',
+                'ISM Manufacturing PMI': 'MANEMP'  # ISM Manufacturing PMI
             }
 
             for series_name, series_id in indicator_list.items():
