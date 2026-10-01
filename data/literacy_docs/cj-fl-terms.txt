@@ -1,0 +1,93 @@
+General Market Terms
+SPY / S&P 500: A major stock market index that tracks the 500 largest companies in the U.S. Often used as the benchmark for performance.
+
+Alpha: Extra return generated compared to the benchmark (SPY). Positive = outperformance.
+
+Beta: Measure of volatility vs the market. Beta 1.0 = moves like SPY; >1 = more volatile; <1 = more stable.
+
+Volatility (σ / Standard Deviation): A statistical measure of how much prices move around. Used to define “risk bands” like 1σ, 2σ, 3σ.
+
+Gross Exposure: Total size of all positions (long + short), compared to portfolio value.
+
+Net Exposure: Long positions minus short positions (net market exposure).
+
+Drawdown: The percentage decline from the portfolio’s peak to its lowest point.
+
+Earnings & Valuation Metrics (Zacks/FactSet style)
+EPS (Earnings Per Share): A company’s profit divided by shares outstanding. EPS0 = last quarter; EPS1/2 = future quarters.
+
+EG1 / EG2 (Earnings Growth): Growth rate of EPS. EG1 = near-term; EG2 = further forward.
+
+P/E (Price-to-Earnings Ratio): Current price divided by earnings. High P/E = expensive, low P/E = cheap.
+
+PEG (Price/Earnings-to-Growth): P/E ratio divided by earnings growth. PEG < 1 = undervalued, PEG > 2 = often overvalued.
+
+Market Cap: Total company value = price × shares outstanding.
+
+Optionable: Whether options contracts are available for the stock.
+
+PTM Cheat Sheet Strategy Terms
+PTM (Play the Macro): Your strategy framework; combine macroeconomic signals with stock-level factors.
+
+Positive → More Positive: The ideal setup — earnings growth improves, valuation remains attractive.
+
+Distribution Phase: When hedge funds quietly sell into strength, often while media is hyping.
+
+Stagflation: Macro regime where growth is weak but inflation is high (defensive sectors win).
+
+Contraction Phase: Recessionary setup, defensive play is preferred.
+
+News & Sentiment
+Catalyst: An event or news trigger that can move a stock (earnings, regulation, product launch).
+
+Fear/Greed Sentiment: When news gets extremely negative → often a contrarian buy signal; when extremely positive → often a signal insiders are selling.
+
+Fake News / Noise: News not relevant to earnings, cash flows, or macro trends — must be filtered out.
+
+Macro Indicators
+Yield Curve: The spread between short-term and long-term interest rates. Inversion = recession signal.
+
+M2 Money Supply: Total money in circulation (cash, deposits) — important for liquidity.
+
+Credit Spreads (IG, HY): Difference in yield between safe bonds (investment grade) and risky ones (junk bonds). Wider spreads = more stress.
+
+ISM PMI: Monthly survey of purchasing managers. >50 = expansion, <50 = contraction.
+
+VIX (Volatility Index): “Fear gauge” for the market, higher = more volatility expected.
+
+Building Permits: Leading indicator for housing and economic growth.
+
+Commodity Prices: Oil, copper, lumber, etc. Used to gauge inflation and economic activity.
+
+Portfolio & Risk Management
+TWR (Time-Weighted Return): Portfolio return metric that removes the effect of adding/removing cash. Best for comparing to benchmarks.
+
+PRM (Pre-Emptive Risk Management): Risk rules applied before trades (e.g., don’t exceed exposure/beta limits).
+
+RRM (Reactive Risk Management): Adjustments made during trades (e.g., cutting losers, adding to winners).
+
+Guardrails: Limits like gross exposure >200%, net <50%, beta >1.3 — warnings when breached.
+
+Attribution Table: Breakdown showing how each stock contributed to overall portfolio return and risk.
+
+Technical Analysis (Charts & Timing)
+Standard Deviation Bands (σ bands): Expected move ranges — 1σ (68%), 2σ (95%), 3σ (99%). Used for price alerts.
+
+Percentile Probabilities: Probability levels in 5% increments (e.g., “10% chance stock drops -15% this month”).
+
+Fibonacci (optional): A sequence-based tool for timing. In simplified mode, replaced by σ/percentiles here.
+
+OHLCV Data: Open, High, Low, Close, Volume — raw daily trading data.
+
+APIs (so he knows what’s what)
+Benzinga / Finnhub / NewsAPI: News aggregators.
+
+FRED, BLS, Census, ISM: Macro data sources.
+
+Polygon, IEX, Tiingo, Alpha Vantage: Stock prices and fundamentals.
+
+Plaid / Alpaca: Brokerage account connectors.
+
+Zacks / Nasdaq Data Link: Earnings estimates, valuation, screeners.
+
+OpenAI API: LLM engine for summarization, strategy logic.

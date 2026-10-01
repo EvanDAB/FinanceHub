@@ -43,50 +43,71 @@ class FinancialLiteracyBot:
     def load_knowledge_base(self):
         """Load and process financial knowledge base documents"""
         documents = []
-        # Get absolute path to the data directory in agent_3
+        # Get absolute path to the data/literacy_docs directory
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Go up to project root
-        data_path = os.path.join(base_dir, 'agent_3', 'data')
+        data_path = os.path.join(base_dir, 'data', 'literacy_docs')
         
         # Create data directory if it doesn't exist
         if not os.path.exists(data_path):
             os.makedirs(data_path)
+            st.warning(f"Created data directory at {data_path}. Please add knowledge base files.")
             
         text_files = [
             "cj-fl-terms.txt",
-            "consumer-finance-glossary.txt",
-            "hbs-cheat-sheet.txt"
+            "hbs-cheatsheat.txt"  # Note: Fixed spelling to match actual filename
         ]
         
         for file in text_files:
             file_path = os.path.join(data_path, file)
-            try:
-                loader = TextLoader(file_path)
-                documents.extend(loader.load())
-            except Exception as e:
-                st.warning(f"Error loading {file}: {str(e)}")
+            if os.path.exists(file_path):
+                try:
+                    loader = TextLoader(file_path)
+                    documents.extend(loader.load())
+                except Exception as e:
+                    st.warning(f"Error loading {file}: {str(e)}")
         
         # Load PDFs if any exist in data directory
-        pdf_files = [f for f in os.listdir(data_path) if f.endswith('.pdf')]
-        for pdf_file in pdf_files:
-            file_path = os.path.join(data_path, pdf_file)
-            try:
-                pdf_text = read_pdf(file_path)
-                if pdf_text:
-                    documents.append({
-                        'page_content': pdf_text,
-                        'metadata': {'source': pdf_file}
-                    })
-            except Exception as e:
-                st.warning(f"Error loading PDF {pdf_file}: {str(e)}")
+        if os.path.exists(data_path):
+            pdf_files = [f for f in os.listdir(data_path) if f.endswith('.pdf')]
+            for pdf_file in pdf_files:
+                file_path = os.path.join(data_path, pdf_file)
+                try:
+                    pdf_text = read_pdf(file_path)
+                    if pdf_text:
+                        from langchain_core.documents import Document
+                        documents.append(Document(
+                            page_content=pdf_text,
+                            metadata={'source': pdf_file}
+                        ))
+                except Exception as e:
+                    st.warning(f"Error loading PDF {pdf_file}: {str(e)}")
+        
+        # Check if we have any documents
+        if not documents:
+            # Create a minimal fallback vectorstore with placeholder text
+            from langchain_core.documents import Document
+            documents = [Document(
+                page_content="Financial literacy knowledge base is being initialized. Please add knowledge base files to the data directory.",
+                metadata={'source': 'placeholder'}
+            )]
         
         # Split documents
         splits = self.text_splitter.split_documents(documents)
         
         # Create FAISS index
-        self.vectorstore = FAISS.from_documents(
-            documents=splits,
-            embedding=self.embeddings
-        )
+        if splits:
+            self.vectorstore = FAISS.from_documents(
+                documents=splits,
+                embedding=self.embeddings
+            )
+        else:
+            # Fallback: create vectorstore with a single dummy document
+            from langchain_core.documents import Document
+            dummy_doc = [Document(page_content="Initializing...", metadata={})]
+            self.vectorstore = FAISS.from_documents(
+                documents=dummy_doc,
+                embedding=self.embeddings
+            )
     
     def create_chat_chain(self):
         """Create the chat response chain"""
