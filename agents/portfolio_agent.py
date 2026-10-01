@@ -4,6 +4,7 @@ import streamlit as st
 import yfinance as yf
 import numpy as np
 import logging
+import threading
 from datetime import datetime, timedelta
 from typing import List, Dict, Tuple, Optional
 
@@ -11,6 +12,7 @@ from langchain_openai import ChatOpenAI
 from util.a2a.agent_messaging import AgentMessage
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+from util.market.yfinance_lock import YFINANCE_LOCK
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -67,7 +69,8 @@ class PortfolioAgent:
         stock_data = {}
         for ticker in tickers:
             try:
-                stock = yf.Ticker(ticker)
+                with YFINANCE_LOCK:
+                    stock = yf.Ticker(ticker)
                 stock_data[ticker] = stock
             except Exception as e:
                 st.warning(f"Could not fetch data for {ticker}: {str(e)}")
@@ -102,17 +105,20 @@ class PortfolioAgent:
                 start_date = end_date - timedelta(days=365)
             
             print(f"[BETA] Downloading data from {start_date.date()} to {end_date.date()}")
+            logger.info("[YF] calculate_portfolio_beta: calling yf.download for %d tickers (thread=%s)", len(tickers), threading.current_thread().name)
             
             # Download data with group_by='ticker' and auto_adjust=True
             # This gives us MultiIndex columns: ('TICKER', 'Close'), ('TICKER', 'Open'), etc.
-            raw_data = yf.download(
-                tickers, 
-                start=start_date, 
-                end=end_date, 
-                progress=False,
-                auto_adjust=True,
-                group_by='ticker'
-            )
+            with YFINANCE_LOCK:
+                raw_data = yf.download(
+                    tickers, 
+                    start=start_date, 
+                    end=end_date, 
+                    progress=False,
+                    auto_adjust=True,
+                    group_by='ticker'
+                )
+            logger.info("[YF] calculate_portfolio_beta: yf.download complete (thread=%s)", threading.current_thread().name)
             
             print(f"[BETA] Download complete. Shape: {raw_data.shape}, Empty: {raw_data.empty}")
             
@@ -242,14 +248,17 @@ class PortfolioAgent:
             tickers = portfolio_df['ticker'].tolist() + ['SPY']
             
             # Download historical data
-            raw_data = yf.download(
-                tickers,
-                start=start_of_year,
-                end=end_date,
-                progress=False,
-                auto_adjust=True,
-                group_by='ticker'
-            )
+            logger.info("[YF] calculate_ytd_performance: calling yf.download for %d tickers (thread=%s)", len(tickers), threading.current_thread().name)
+            with YFINANCE_LOCK:
+                raw_data = yf.download(
+                    tickers,
+                    start=start_of_year,
+                    end=end_date,
+                    progress=False,
+                    auto_adjust=True,
+                    group_by='ticker'
+                )
+            logger.info("[YF] calculate_ytd_performance: yf.download complete (thread=%s)", threading.current_thread().name)
             
             if raw_data.empty:
                 print("[YTD] ERROR: Historical data download returned empty dataset.")

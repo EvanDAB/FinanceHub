@@ -4,6 +4,7 @@ from datetime import datetime
 import yfinance as yf
 from typing import List, Dict, Optional
 from agents.idea_builder_goal_planner_agent import InvestmentIdea
+from util.market.yfinance_lock import YFINANCE_LOCK
 
 def get_instrument_suggestions(search_term: str, instrument_type: str) -> List[Dict]:
     """
@@ -27,8 +28,9 @@ def get_instrument_suggestions(search_term: str, instrument_type: str) -> List[D
             try:
                 # Search for the symbol with the appropriate suffix
                 search_symbol = f"{search_term}{suffix}"
-                ticker = yf.Ticker(search_symbol)
-                info = ticker.info
+                with YFINANCE_LOCK:
+                    ticker = yf.Ticker(search_symbol)
+                    info = ticker.info
                 
                 if info and 'symbol' in info:
                     results.append({
@@ -103,8 +105,9 @@ def render_idea_builder_tab():
                             
                             # Display instrument info
                             try:
-                                ticker = yf.Ticker(selected_instrument['symbol'])
-                                info = ticker.info
+                                with YFINANCE_LOCK:
+                                    ticker = yf.Ticker(selected_instrument['symbol'])
+                                    info = ticker.info
                                 
                                 col1, col2 = st.columns(2)
                                 with col1:
@@ -168,9 +171,7 @@ def render_idea_builder_tab():
                             risk_level=risk_level,
                             investment_types=investment_types,
                             position_size=position_size,
-                            direction=direction,
-                            created_at=datetime.now(),
-                            instrument=selected_instrument
+                            created_at=datetime.now()
                         )
                         analysis = st.session_state.hub.idea_builder.analyze_idea(idea)
                         idea.analysis = analysis
@@ -192,9 +193,7 @@ def render_idea_builder_tab():
                         risk_level=risk_level,
                         investment_types=investment_types,
                         position_size=position_size,
-                        direction=direction,
                         created_at=datetime.now(),
-                        instrument=selected_instrument,
                         analysis=st.session_state.get("current_analysis")
                     )
                     idea_id = st.session_state.hub.idea_storage.save_idea(idea)
